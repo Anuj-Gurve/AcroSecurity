@@ -303,7 +303,7 @@
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
-    import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 
 const auth = getAuth();
 signInWithEmailAndPassword(auth, email, password)
@@ -320,6 +320,7 @@ signInWithEmailAndPassword(auth, email, password)
 </script>
 </body>
 </html>
+
 
 
 
