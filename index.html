@@ -285,11 +285,9 @@
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 
   // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   const firebaseConfig = {
     apiKey: "AIzaSyBinQO3_OZ4zozkvyC4litpysTy0MU0Dz4",
     authDomain: "acrosecurity-c3c03.firebaseapp.com",
@@ -300,30 +298,52 @@
     measurementId: "G-QTV2HJ8PMX"
   };
 
-  // Initialize Firebase
+  // 1. Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
-const emailinp = document.getElementById("email");
-    const passinp = document.getElementById("password");
-const auth = getAuth();
-    const email = emailinp.value;
-    const password = passinp.value;
-signInWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
-    // Signed in 
-    const user = userCredential.user;
-      console.log("signed in!!!");
-      //window.location.href = "homepage.html";
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
+  const auth = getAuth(app); // Get auth instance
+
+  // 2. Select the DOM elements
+  const loginForm = document.querySelector('form'); // Select the <form> element
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+
+  // 3. Add the event listener to the form submission
+  loginForm.addEventListener('submit', (event) => {
+    // Prevent the default form submission (which reloads the page)
+    event.preventDefault();
+
+    // 4. Get the values *at the moment of submission*
+    const email = emailInput.value;
+    const password = passwordInput.value;
+
+    console.log("Attempting sign-in with:", email);
+
+    // 5. Call the Firebase function
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in successfully
+        const user = userCredential.user;
+        console.log("Signed in successfully!", user);
+        // window.location.href = "homepage.html";
+        // You might want to change the button text or give a success message here
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        
+        // Display a more user-friendly error message
+        console.error("Sign-in failed:", errorCode, errorMessage);
+        alert(`Login Failed: ${errorMessage}`);
+        
+        // Optional: Clear the password field for security
+        passwordInput.value = "";
+      });
   });
 </script>
 </body>
 </html>
+
 
 
 
